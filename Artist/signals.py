@@ -7,9 +7,9 @@ from rest_framework.authtoken.models import Token
 
 @receiver(post_save, sender=get_user_model())
 def creating_artist(sender, instance, **kwargs):
-    print("running")
     # attaching the user instance to a new Artist Instance
-    artist = ArtistModel.objects.create(name=instance.first_name, userInstance=instance)
-    artist.save()
+    artist = ArtistModel.objects.get_or_create(
+        name=instance.first_name, userInstance=instance
+    )
     # Creating the Token for the user
-    Token.objects.create(user=instance)
+    Token.objects.get_or_create(user=instance)
