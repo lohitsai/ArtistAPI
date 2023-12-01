@@ -39,6 +39,8 @@ class WorkCreate(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         workinstance = serializer.save()
+        # Retriving the artist instance that is linked to the current User
         artist = ArtistModel.objects.get(userInstance=self.request.user)
+        # Adding the work instance to the artist instance and saving it
         artist.work.add(workinstance)
         return super().perform_create(serializer)
